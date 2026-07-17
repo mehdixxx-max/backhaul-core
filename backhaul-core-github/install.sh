@@ -8,7 +8,7 @@ REPO_RAW_BASE="${REPO_RAW_BASE:-https://raw.githubusercontent.com/mehdixxx-max/b
 
 if [[ "$(id -u)" -ne 0 ]]; then
   echo "Please run as root, for example:"
-  echo "curl -fsSL ${REPO_RAW_BASE}/install.sh | sudo bash"
+  echo "wget -O /root/install.sh ${REPO_RAW_BASE}/install.sh && sudo bash /root/install.sh"
   exit 1
 fi
 
@@ -30,10 +30,10 @@ download_file() {
   local tmp="${output}.tmp"
 
   rm -f "$tmp"
-  if command -v curl >/dev/null 2>&1; then
-    curl -fsSL "$url" -o "$tmp"
-  elif command -v wget >/dev/null 2>&1; then
+  if command -v wget >/dev/null 2>&1; then
     wget -qO "$tmp" "$url"
+  elif command -v curl >/dev/null 2>&1; then
+    curl -fsSL "$url" -o "$tmp"
   else
     echo "curl or wget is required."
     exit 1
